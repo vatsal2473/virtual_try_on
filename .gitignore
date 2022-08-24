@@ -1,0 +1,4 @@
+models/hrviton/data/*
+models/hrviton/tensorboard/*
+models/hrviton/checkpoints/*
+models/clothsegment/trained_checkpoint/*
