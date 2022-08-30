@@ -81,3 +81,7 @@ shutil.copyfile(src, dst)
 src = 'models/hrviton/data/zalando-hd-resized/test/openpose_json/' + (human_model[0:8]+"_keypoints"+human_model[8:]).replace("jpg","json")
 dst = 'models/hrviton/my_data/test/openpose_json/' + (human_model[0:8]+"_keypoints"+human_model[8:]).replace("jpg","json")
 shutil.copyfile(src, dst)
+
+# hinge cost function
+def hinge_cost(y_true, y_pred):
+    return np .mean(K.mean(K.square(y_pred - y_true), axis=-1))

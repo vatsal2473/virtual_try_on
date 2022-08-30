@@ -1,41 +1,49 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
+
 <head>
-<title>Python Flask Upload and display image</title>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />        
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-</head>
+  <meta charset="UTF-8">
+  <title>Noice</title>
+  <link rel='stylesheet' href='https://file.myfontastic.com/SLzQsLcd7FmmzjBYTcyVW3/icons.css'>
+  <link rel="stylesheet" href="{{url_for('static', filename = 'style.css')}}">
+</head> 
+
 <body>
-<p><h1 align="center">Python Flask Upload and display image</h1></p>
-<div class="container">
-<div class="row">
-    <h2>Select a file to upload</h2>
-    <p>
-        {% with messages = get_flashed_messages() %}
-          {% if messages %}
-            <ul>
-            {% for message in messages %}
-              <li>{{ message }}</li>
-            {% endfor %}
-            </ul>
-          {% endif %}
-        {% endwith %}
-    </p>
-    {% if filename %}
-        <div>
-            <img src="{{ url_for('display_image', filename=filename) }}">
+
+  <main class="c-main">
+    <div id="container" class="c-section c-section--1">
+      <div class="titling"><span>Noice Uploader</span>
+        <div class="dropdown">
+          <select name="menu" id="menu-items">
+            <option disabled>Select Cource</option>
+            <option value="OOO34_00.jpg" selected>OOO34_00.jpg</option>
+            <option value="2" disabled>2</option>
+            <option value="3" disabled>3</option>
+          </select>
         </div>
-    {% endif %}
-    <form method="post" action="/" enctype="multipart/form-data">
-        <dl>
-            <p>
-                <input type="file" name="file" class="form-control" autocomplete="off" required>
-            </p>
-        </dl>
-        <p>
-            <input type="submit" value="Submit" class="btn btn-info">
-        </p>
-    </form>
-</div>
-</div>
+        <label class="uploader" ondragover="return false">
+          <i class="icon-upload icon"></i>
+          <img src="" class="">
+          <input type="file" accept="image/jpg,image/png,image/jpeg" name="file" class="file">
+        </label>
+      </div>
+    </div>
+    <div class="result c-section c-section--2">
+      <div class="loader"></div>
+      <img src="https://source.unsplash.com/ufFIweqSPd4/800x800" id="images">
+      <div id="thumbnails">
+        <img src="https://source.unsplash.com/ufFIweqSPd4/800x800">
+        <img src="https://source.unsplash.com/O0uCm1WLnA0/800x800">
+        <img src="https://source.unsplash.com/pV5ckb2HEVk/800x800">
+        <img src="https://source.unsplash.com/j9QEFAQqaXc/800x800">
+        <img src="https://source.unsplash.com/EXkbaeN05lY/800x800">
+        <img src="https://source.unsplash.com/B2mq60Ksrsg/800x800">
+      </div>
+    </div>
+
+  </main>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/three.js/84/three.min.js'></script>
+  <script src="{{url_for('static', filename = 'script.js')}}"></script>
 </body>
+
 </html>
