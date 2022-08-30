@@ -188,7 +188,7 @@ def upload_image():
     
     #print(len(human_model), len(cloth_file))
     
-    print(human_model,cloth_file)
+    # print(human_model,cloth_file)
 
     new_string = cloth_file.split(',')[1]
 
@@ -204,16 +204,15 @@ def upload_image():
         print(im.shape)
         cv2.imwrite('static/uploads/'+i.split('.')[0]+'.jpg',im)
 
-    #predict(filename, human_model)
-    #img = os.listdir('output/test/test/unpaired/generator/output/')
-    #img = img[0]
-    #file_path = 'output/test/test/unpaired/generator/output/' + img
+    predict('image.jpg', human_model)
+    img = os.listdir('output/test/test/unpaired/generator/output/')
+    img = img[0]
+    file_path = 'output/test/test/unpaired/generator/output/' + img
     #array_of_output_image = cv2.imread(file_path)
     #encodedNumpyData = json.dumps(array_of_output_image, cls=NumpyArrayEncoder) 
 
     # allow cross-origin requests (from the frontend)
-    
-    encoded_img = get_response_image('output.jpg')
+    encoded_img = get_response_image(file_path)
 
     response = jsonify({'output': encoded_img})
     return (response)
@@ -250,4 +249,4 @@ def ReturnJSON():
 
  
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=8080, debug=True)
+    app.run()

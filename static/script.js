@@ -222,7 +222,7 @@ function createParticleSystem() {
     console.log(form)
 
 
-    fetch("https://vatsal2473-ov10131x17qm47fa.socketxp.com/file-upload", {
+    fetch("https://vatsal2473-u9y0h6e2vtv1zj93.socketxp.com//file-upload", {
       method: "post",
       mode: "no-cors",
       headers: {

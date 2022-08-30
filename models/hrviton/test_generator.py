@@ -11,7 +11,7 @@ from models.hrviton.cp_dataset_test import CPDatasetTest, CPDataLoader
 from models.hrviton.networks import ConditionGenerator, load_checkpoint, make_grid
 from models.hrviton.network_generator import SPADEGenerator
 from tensorboardX import SummaryWriter
-from utils import *
+from models.hrviton.utils import *
 
 import torchgeometry as tgm
 from collections import OrderedDict
