@@ -11,7 +11,7 @@ def MSE(img1, img2):
   err = summed / num_pix
   return err
 
-def image_quality(images):
+def image_quality():
     warped_clothmask = os.listdir('output/test/test/unpaired/generator/warped_clothmask')
     output = os.listdir('output/test/test/unpaired/generator/output')
     for k in range(len(warped_clothmask)):

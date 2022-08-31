@@ -219,7 +219,7 @@ def upload_image():
     predict('image.jpg', human_model)
     #need best output value of img
     img_dict = image_quality()
-    img = (img_dict.values())[0]
+    img = list(img_dict.values())[0]
 
     file_path = 'output/test/test/unpaired/generator/output/' + img
 
