@@ -17,6 +17,7 @@ import cv2
 import json
 from json import JSONEncoder
 import numpy
+from image_quality_assessment import image_quality
 
 
 app = Flask(__name__)
@@ -40,8 +41,10 @@ def allowed_file(filename):
      
 def predict(filename, human_model):
 
+    human_model = ['00094_00.jpg', '00135_00.jpg', '00260_00.jpg', '00484_00.jpg', '00494_00.jpg', '00684_00.jpg', '00814_00.jpg', '01985_00.jpg']
     #human_model = '00013_00.jpg'
     print(human_model)
+    print(filename)
     infer.main()
     
     images_list = os.listdir('static/inputs_cloth_mask')
@@ -118,33 +121,36 @@ def predict(filename, human_model):
     dst = 'models/hrviton/my_data/test/cloth-mask/' + filename
     shutil.copyfile(src, dst)
 
-    src = 'models/hrviton/data/zalando-hd-resized/test/image/' + human_model
-    dst = 'models/hrviton/my_data/test/image/' + human_model
-    shutil.copyfile(src, dst)
+    for i in range(len(human_model)):
+        src = 'models/hrviton/data/zalando-hd-resized/test/image/' + human_model[i]
+        dst = 'models/hrviton/my_data/test/image/' + human_model[i]
+        shutil.copyfile(src, dst)
 
-    src = 'models/hrviton/data/zalando-hd-resized/test/image-densepose/' + human_model
-    dst = 'models/hrviton/my_data/test/image-densepose/' + human_model
-    shutil.copyfile(src, dst)
+        src = 'models/hrviton/data/zalando-hd-resized/test/image-densepose/' + human_model[i]
+        dst = 'models/hrviton/my_data/test/image-densepose/' + human_model[i]
+        shutil.copyfile(src, dst)
 
-    src = 'models/hrviton/data/zalando-hd-resized/test/image-parse-agnostic-v3.2/' + human_model.replace("jpg", "png")
-    dst = 'models/hrviton/my_data/test/image-parse-agnostic-v3.2/' + human_model.replace("jpg", "png")
-    shutil.copyfile(src, dst)
+        src = 'models/hrviton/data/zalando-hd-resized/test/image-parse-agnostic-v3.2/' + human_model[i].replace("jpg", "png")
+        dst = 'models/hrviton/my_data/test/image-parse-agnostic-v3.2/' + human_model[i].replace("jpg", "png")
+        shutil.copyfile(src, dst)
 
-    src = 'models/hrviton/data/zalando-hd-resized/test/image-parse-v3/' + human_model.replace("jpg", "png")
-    dst = 'models/hrviton/my_data/test/image-parse-v3/' + human_model.replace("jpg", "png")
-    shutil.copyfile(src, dst)    
+        src = 'models/hrviton/data/zalando-hd-resized/test/image-parse-v3/' + human_model[i].replace("jpg", "png")
+        dst = 'models/hrviton/my_data/test/image-parse-v3/' + human_model[i].replace("jpg", "png")
+        shutil.copyfile(src, dst)    
 
-    src = 'models/hrviton/data/zalando-hd-resized/test/openpose_img/' + (human_model[0:8]+"_rendered"+human_model[8:]).replace("jpg","png")
-    dst = 'models/hrviton/my_data/test/openpose_img/' + (human_model[0:8]+"_rendered"+human_model[8:]).replace("jpg","png")
-    shutil.copyfile(src, dst)
+        src = 'models/hrviton/data/zalando-hd-resized/test/openpose_img/' + (human_model[i][0:8]+"_rendered"+human_model[i][8:]).replace("jpg","png")
+        dst = 'models/hrviton/my_data/test/openpose_img/' + (human_model[i][0:8]+"_rendered"+human_model[i][8:]).replace("jpg","png")
+        shutil.copyfile(src, dst)
 
-    src = 'models/hrviton/data/zalando-hd-resized/test/openpose_json/' + (human_model[0:8]+"_keypoints"+human_model[8:]).replace("jpg","json")
-    dst = 'models/hrviton/my_data/test/openpose_json/' + (human_model[0:8]+"_keypoints"+human_model[8:]).replace("jpg","json")
-    shutil.copyfile(src, dst)
+        src = 'models/hrviton/data/zalando-hd-resized/test/openpose_json/' + (human_model[i][0:8]+"_keypoints"+human_model[i][8:]).replace("jpg","json")
+        dst = 'models/hrviton/my_data/test/openpose_json/' + (human_model[i][0:8]+"_keypoints"+human_model[i][8:]).replace("jpg","json")
+        shutil.copyfile(src, dst)
 
 
     with open('models/hrviton/my_data/test_pairs.txt', 'w') as f:
-        f.write(human_model+" "+filename)
+        for i in range(len(human_model)):
+            f.write(human_model[i]+" "+filename)
+            f.write("\n")
 
     test_generator.main()
     #final output here
@@ -182,13 +188,19 @@ def upload_image():
     for f in filelist:
         os.remove(f)
 
+    dir = 'output/test/test/unpaired/generator/grid'
+    filelist = glob.glob(os.path.join(dir, "*"))
+    for f in filelist:
+        os.remove(f)
+
+    dir = 'output/test/test/unpaired/generator/output'
+    filelist = glob.glob(os.path.join(dir, "*"))
+    for f in filelist:
+        os.remove(f)
+
 
     human_model  = request.form.get('human_model', type=str, default='')
     cloth_file=request.form.get('file',type = str, default='')
-    
-    #print(len(human_model), len(cloth_file))
-    
-    # print(human_model,cloth_file)
 
     new_string = cloth_file.split(',')[1]
 
@@ -205,9 +217,12 @@ def upload_image():
         cv2.imwrite('static/uploads/'+i.split('.')[0]+'.jpg',im)
 
     predict('image.jpg', human_model)
-    img = os.listdir('output/test/test/unpaired/generator/output/')
-    img = img[0]
+    #need best output value of img
+    img_dict = image_quality()
+    img = (img_dict.values())[0]
+
     file_path = 'output/test/test/unpaired/generator/output/' + img
+
     #array_of_output_image = cv2.imread(file_path)
     #encodedNumpyData = json.dumps(array_of_output_image, cls=NumpyArrayEncoder) 
 
@@ -237,15 +252,6 @@ def upload_image():
         return resp
     '''
 
-@app.route('/returnjson', methods = ['GET'])
-def ReturnJSON():
-    if(request.method == 'GET'):
-        data = {
-            "Modules" : 15,
-            "Subject" : "Data Structures and Algorithms",
-        }
-  
-        return jsonify(data)
 
  
 if __name__ == "__main__":

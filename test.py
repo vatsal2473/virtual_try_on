@@ -1,87 +1,15 @@
-from fileinput import filename
-import shutil
-import os, glob
+dic = {29.179523468017578: '00916_00_00502_00.png',
+ 29.32981999715169: '00939_00_00502_00.png',
+ 30.58008066813151: '00984_00_00502_00.png',
+ 30.638071695963543: '00906_00_00502_00.png',
+ 30.783203125: '00981_00_00502_00.png',
+ 37.54914855957031: '00986_00_00502_00.png',
+ 37.786808013916016: '00925_00_00502_00.png',
+ 40.06766001383463: '00961_00_00502_00.png',
+ 41.2517344156901: '00920_00_00502_00.png',
+ 41.70329030354818: '00960_00_00502_00.png',
+ 85.54215240478516: '00955_00_00502_00.png',
+ 92.12901051839192: '00911_00_00502_00.png'}
 
-dir = 'models/hrviton/my_data/test/agnostic-v3.2'
-filelist = glob.glob(os.path.join(dir, "*"))
-for f in filelist:
-    os.remove(f)
-
-dir = 'models/hrviton/my_data/test/cloth'
-filelist = glob.glob(os.path.join(dir, "*"))
-for f in filelist:
-    os.remove(f)
-
-dir = 'models/hrviton/my_data/test/cloth-mask'
-filelist = glob.glob(os.path.join(dir, "*"))
-for f in filelist:
-    os.remove(f)
-
-dir = 'models/hrviton/my_data/test/image'
-filelist = glob.glob(os.path.join(dir, "*"))
-for f in filelist:
-    os.remove(f)
-
-dir = 'models/hrviton/my_data/test/image-densepose'
-filelist = glob.glob(os.path.join(dir, "*"))
-for f in filelist:
-    os.remove(f)
-
-dir = 'models/hrviton/my_data/test/image-parse-agnostic-v3.2'
-filelist = glob.glob(os.path.join(dir, "*"))
-for f in filelist:
-    os.remove(f)
-
-dir = 'models/hrviton/my_data/test/image-parse-v3'
-filelist = glob.glob(os.path.join(dir, "*"))
-for f in filelist:
-    os.remove(f)
-
-dir = 'models/hrviton/my_data/test/openpose_img'
-filelist = glob.glob(os.path.join(dir, "*"))
-for f in filelist:
-    os.remove(f)
-
-dir = 'models/hrviton/my_data/test/openpose_json'
-filelist = glob.glob(os.path.join(dir, "*"))
-for f in filelist:
-    os.remove(f)
-
-filename = '00008_00.jpg'
-human_model = '00013_00.jpg'
-
-src = 'static/uploads/' + filename
-dst = 'models/hrviton/my_data/test/cloth/' + filename
-shutil.copyfile(src, dst)
-
-src = 'models/hrviton/data/zalando-hd-resized/test/cloth-mask/' + filename
-dst = 'models/hrviton/my_data/test/cloth-mask/' + filename
-shutil.copyfile(src, dst)
-
-src = 'models/hrviton/data/zalando-hd-resized/test/image/' + human_model
-dst = 'models/hrviton/my_data/test/image/' + human_model
-shutil.copyfile(src, dst)
-
-src = 'models/hrviton/data/zalando-hd-resized/test/image-densepose/' + human_model
-dst = 'models/hrviton/my_data/test/image-densepose/' + human_model
-shutil.copyfile(src, dst)
-
-src = 'models/hrviton/data/zalando-hd-resized/test/image-parse-agnostic-v3.2/' + human_model.replace("jpg", "png")
-dst = 'models/hrviton/my_data/test/image-parse-agnostic-v3.2/' + human_model.replace("jpg", "png")
-shutil.copyfile(src, dst)
-
-src = 'models/hrviton/data/zalando-hd-resized/test/image-parse-v3/' + human_model.replace("jpg", "png")
-dst = 'models/hrviton/my_data/test/image-parse-v3/' + human_model.replace("jpg", "png")
-shutil.copyfile(src, dst)    
-
-src = 'models/hrviton/data/zalando-hd-resized/test/openpose_img/' + (human_model[0:8]+"_rendered"+human_model[8:]).replace("jpg","png")
-dst = 'models/hrviton/my_data/test/openpose_img/' + (human_model[0:8]+"_rendered"+human_model[8:]).replace("jpg","png")
-shutil.copyfile(src, dst)
-
-src = 'models/hrviton/data/zalando-hd-resized/test/openpose_json/' + (human_model[0:8]+"_keypoints"+human_model[8:]).replace("jpg","json")
-dst = 'models/hrviton/my_data/test/openpose_json/' + (human_model[0:8]+"_keypoints"+human_model[8:]).replace("jpg","json")
-shutil.copyfile(src, dst)
-
-# hinge cost function
-def hinge_cost(y_true, y_pred):
-    return np .mean(K.mean(K.square(y_pred - y_true), axis=-1))
+print(list(dic.values())[0])
+#print(dic[0])

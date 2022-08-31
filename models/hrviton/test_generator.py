@@ -102,10 +102,20 @@ def test(opt, test_loader, board, tocg, generator):
                             opt.datamode, opt.datasetting, 'generator', 'output')
     grid_dir = os.path.join('./output', opt.test_name,
                              opt.datamode, opt.datasetting, 'generator', 'grid')
-    
+    cloth_segment_dir = os.path.join('./output', opt.test_name,
+                             opt.datamode, opt.datasetting, 'generator', 'cloth_segment')
+    #model_segment_dir = os.path.join('./output', opt.test_name,
+    #                         opt.datamode, opt.datasetting, 'generator', 'model_segment')
+    warped_clothmask_dir = os.path.join('./output', opt.test_name,
+                             opt.datamode, opt.datasetting, 'generator', 'warped_clothmask')
+
     os.makedirs(grid_dir, exist_ok=True)
     
     os.makedirs(output_dir, exist_ok=True)
+
+    os.makedirs(cloth_segment_dir, exist_ok=True)
+
+    os.makedirs(warped_clothmask_dir, exist_ok=True)
     
     num = 0
     iter_start_time = time.time()
@@ -195,15 +205,26 @@ def test(opt, test_loader, board, tocg, generator):
             # visualize
             unpaired_names = []
             for i in range(shape[0]):
-                grid = make_image_grid([(clothes[i].cpu() / 2 + 0.5), (pre_clothes_mask[i].cpu()).expand(3, -1, -1), visualize_segmap(parse_agnostic.cpu(), batch=i), ((densepose.cpu()[i]+1)/2),
-                                        (warped_cloth[i].cpu().detach() / 2 + 0.5), (warped_clothmask[i].cpu().detach()).expand(3, -1, -1), visualize_segmap(fake_parse_gauss.cpu(), batch=i),
-                                        (pose_map[i].cpu()/2 +0.5), (warped_cloth[i].cpu()/2 + 0.5), (agnostic[i].cpu()/2 + 0.5),
-                                        (im[i]/2 +0.5), (output[i].cpu()/2 +0.5)],
-                                        nrow=4)
+                #grid = make_image_grid([(clothes[i].cpu() / 2 + 0.5), (pre_clothes_mask[i].cpu()).expand(3, -1, -1), visualize_segmap(parse_agnostic.cpu(), batch=i), ((densepose.cpu()[i]+1)/2),
+                #                        (warped_cloth[i].cpu().detach() / 2 + 0.5), (warped_clothmask[i].cpu().detach()).expand(3, -1, -1), visualize_segmap(fake_parse_gauss.cpu(), batch=i),
+                #                        (pose_map[i].cpu()/2 +0.5), (warped_cloth[i].cpu()/2 + 0.5), (agnostic[i].cpu()/2 + 0.5),
+                #                        (im[i]/2 +0.5), (output[i].cpu()/2 +0.5)],
+                #                        nrow=4)
                 #print(inputs)
                 unpaired_name = (inputs['im_name'][i].split('.')[0] + '_' + inputs['c_name'][opt.datasetting][i].split('.')[0] + '.png')
                 #unpaired_name = 'output_image.png'
-                save_image(grid, os.path.join(grid_dir, unpaired_name))
+                
+                #save_image(grid, os.path.join(grid_dir, unpaired_name))
+
+                segment_cloth = (warped_cloth[i].cpu().detach() / 2 + 0.5)
+                #segment_model = visualize_segmap(fake_parse_gauss.cpu(), batch=i)
+                warped_clothmask_2 = (warped_clothmask[i].cpu().detach()).expand(3, -1, -1)
+
+                save_image(segment_cloth, os.path.join(cloth_segment_dir, unpaired_name))
+                #save_image(segment_model, os.path.join(model_segment_dir, unpaired_name))
+                save_image(warped_clothmask_2, os.path.join(warped_clothmask_dir, unpaired_name))
+
+
                 unpaired_names.append(unpaired_name)
                 
             # save output
