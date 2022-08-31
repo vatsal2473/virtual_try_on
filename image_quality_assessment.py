@@ -14,6 +14,7 @@ def MSE(img1, img2):
 def image_quality():
     warped_clothmask = os.listdir('output/test/test/unpaired/generator/warped_clothmask')
     output = os.listdir('output/test/test/unpaired/generator/output')
+    print(len(warped_clothmask))
     for k in range(len(warped_clothmask)):
         img1 = Image.open('output/test/test/unpaired/generator/warped_clothmask/' + warped_clothmask[k])
         img2 = Image.open('output/test/test/unpaired/generator/output/' + output[k])

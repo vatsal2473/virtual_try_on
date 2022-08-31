@@ -41,7 +41,7 @@ def allowed_file(filename):
      
 def predict(filename, human_model):
 
-    human_model = ['00094_00.jpg', '00135_00.jpg', '00260_00.jpg', '00484_00.jpg', '00494_00.jpg', '00684_00.jpg', '00814_00.jpg', '01985_00.jpg']
+    human_model = ['00509_00.jpg', '00135_00.jpg', '00617_00.jpg', '00641_00.jpg', '00992_00.jpg', '01035_00.jpg', '01069_00.jpg', '01430_00.jpg']
     #human_model = '00013_00.jpg'
     print(human_model)
     print(filename)
@@ -194,6 +194,11 @@ def upload_image():
         os.remove(f)
 
     dir = 'output/test/test/unpaired/generator/output'
+    filelist = glob.glob(os.path.join(dir, "*"))
+    for f in filelist:
+        os.remove(f)
+	
+    dir = 'output/test/test/unpaired/generator/warped_clothmask'
     filelist = glob.glob(os.path.join(dir, "*"))
     for f in filelist:
         os.remove(f)
