@@ -1,7 +1,7 @@
 from email.mime import base
 import io
+from unicodedata import category
 from flask import Flask, flash, request, redirect, url_for, render_template, jsonify
-from flask_cors import CORS, cross_origin
 import urllib.request
 import os
 import base64
@@ -12,12 +12,13 @@ from models.clothsegment import infer
 from fileinput import filename
 import shutil
 import os, glob
-from PIL import Image, ImageChops
+from PIL import Image
 import cv2
 import json
 from json import JSONEncoder
 import numpy
 from image_quality_assessment import image_quality
+from clean_directories import clean_my_data, clean_static, clean_output
 
 
 app = Flask(__name__)
@@ -39,10 +40,27 @@ class NumpyArrayEncoder(JSONEncoder):
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
      
-def predict(filename, human_model):
+def predict(filename, category):
 
-    human_model = ['00509_00.jpg', '00135_00.jpg', '00617_00.jpg', '00641_00.jpg', '00992_00.jpg', '01035_00.jpg', '01069_00.jpg', '01430_00.jpg']
-    #human_model = '00013_00.jpg'
+    #human_model = ['00094_00.jpg', '00135_00.jpg', '00260_00.jpg', '00484_00.jpg', '00494_00.jpg', '00684_00.jpg', '00814_00.jpg', '01985_00.jpg']
+    full_length = os.listdir('Length/full')
+    half_length = os.listdir('Length/half')
+    middle_length = os.listdir('Length/middle')
+    sleeveless_length = os.listdir('Length/sleveless')
+
+    human_model = []
+
+    if category == 'full':
+        human_model = full_length
+    elif category == 'half':
+        human_model = half_length
+    elif category == 'middle':
+        human_model = middle_length
+    elif category == 'sleeveless':
+        human_model = sleeveless_length
+
+
+    '''
     print(human_model)
     print(filename)
     infer.main()
@@ -62,57 +80,11 @@ def predict(filename, human_model):
                     img.putpixel((i, j), (255, 255, 255))
         img = img.convert('L')
         img.save(image_save_path)  	
-    
+    '''
 
+    clean_my_data()
 
-    dir = 'models/hrviton/my_data/test/agnostic-v3.2'
-    filelist = glob.glob(os.path.join(dir, "*"))
-    for f in filelist:
-        os.remove(f)
-
-    dir = 'models/hrviton/my_data/test/cloth'
-    filelist = glob.glob(os.path.join(dir, "*"))
-    for f in filelist:
-        os.remove(f)
-
-    dir = 'models/hrviton/my_data/test/cloth-mask'
-    filelist = glob.glob(os.path.join(dir, "*"))
-    for f in filelist:
-        os.remove(f)
-
-    dir = 'models/hrviton/my_data/test/image'
-    filelist = glob.glob(os.path.join(dir, "*"))
-    for f in filelist:
-        os.remove(f)
-
-    dir = 'models/hrviton/my_data/test/image-densepose'
-    filelist = glob.glob(os.path.join(dir, "*"))
-    for f in filelist:
-        os.remove(f)
-
-    dir = 'models/hrviton/my_data/test/image-parse-agnostic-v3.2'
-    filelist = glob.glob(os.path.join(dir, "*"))
-    for f in filelist:
-        os.remove(f)
-
-    dir = 'models/hrviton/my_data/test/image-parse-v3'
-    filelist = glob.glob(os.path.join(dir, "*"))
-    for f in filelist:
-        os.remove(f)
-
-    dir = 'models/hrviton/my_data/test/openpose_img'
-    filelist = glob.glob(os.path.join(dir, "*"))
-    for f in filelist:
-        os.remove(f)
-
-    dir = 'models/hrviton/my_data/test/openpose_json'
-    filelist = glob.glob(os.path.join(dir, "*"))
-    for f in filelist:
-        os.remove(f)
-
-    #filename = '00008_00.jpg'
-    #human_model = '00013_00.jpg'
-
+    '''
     src = 'static/uploads/' + filename
     dst = 'models/hrviton/my_data/test/cloth/' + filename
     shutil.copyfile(src, dst)
@@ -120,6 +92,8 @@ def predict(filename, human_model):
     src = 'static/inputs_cloth_mask_modified/' + filename
     dst = 'models/hrviton/my_data/test/cloth-mask/' + filename
     shutil.copyfile(src, dst)
+
+    '''
 
     for i in range(len(human_model)):
         src = 'models/hrviton/data/zalando-hd-resized/test/image/' + human_model[i]
@@ -146,15 +120,14 @@ def predict(filename, human_model):
         dst = 'models/hrviton/my_data/test/openpose_json/' + (human_model[i][0:8]+"_keypoints"+human_model[i][8:]).replace("jpg","json")
         shutil.copyfile(src, dst)
 
-
+    
     with open('models/hrviton/my_data/test_pairs.txt', 'w') as f:
         for i in range(len(human_model)):
             f.write(human_model[i]+" "+filename)
             f.write("\n")
 
-    test_generator.main()
-    #final output here
-    #output/test/unpaired/generator/output
+    #test_generator.main()
+
 
 def get_response_image(image_path):
     pil_img = Image.open(image_path, mode='r') # reads the PIL image
@@ -173,38 +146,10 @@ def template_test():
 #@cross_origin(supports_credentials=True)
 def upload_image():
 
-    dir = 'static/uploads'
-    filelist = glob.glob(os.path.join(dir, "*"))
-    for f in filelist:
-        os.remove(f)
-
-    dir = 'static/inputs_cloth_mask'
-    filelist = glob.glob(os.path.join(dir, "*"))
-    for f in filelist:
-        os.remove(f)
-
-    dir = 'static/inputs_cloth_mask_modified'
-    filelist = glob.glob(os.path.join(dir, "*"))
-    for f in filelist:
-        os.remove(f)
-
-    dir = 'output/test/test/unpaired/generator/grid'
-    filelist = glob.glob(os.path.join(dir, "*"))
-    for f in filelist:
-        os.remove(f)
-
-    dir = 'output/test/test/unpaired/generator/output'
-    filelist = glob.glob(os.path.join(dir, "*"))
-    for f in filelist:
-        os.remove(f)
-	
-    dir = 'output/test/test/unpaired/generator/warped_clothmask'
-    filelist = glob.glob(os.path.join(dir, "*"))
-    for f in filelist:
-        os.remove(f)
-
-
-    human_model  = request.form.get('human_model', type=str, default='')
+    clean_static()
+    clean_output()
+    
+    category  = request.form.get('human_model', type=str, default='')
     cloth_file=request.form.get('file',type = str, default='')
 
     new_string = cloth_file.split(',')[1]
@@ -221,17 +166,13 @@ def upload_image():
         print(im.shape)
         cv2.imwrite('static/uploads/'+i.split('.')[0]+'.jpg',im)
 
-    predict('image.jpg', human_model)
+    predict('image.jpg', category)
+
     #need best output value of img
     img_dict = image_quality()
+
     img = list(img_dict.values())[0]
-
     file_path = 'output/test/test/unpaired/generator/output/' + img
-
-    #array_of_output_image = cv2.imread(file_path)
-    #encodedNumpyData = json.dumps(array_of_output_image, cls=NumpyArrayEncoder) 
-
-    # allow cross-origin requests (from the frontend)
     encoded_img = get_response_image(file_path)
 
     response = jsonify({'output': encoded_img})
@@ -260,4 +201,4 @@ def upload_image():
 
  
 if __name__ == "__main__":
-    app.run()
+    app.run(host='127.0.0.1', port=5000)
