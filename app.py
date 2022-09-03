@@ -43,12 +43,46 @@ def allowed_file(filename):
 def predict(filename, category):
 
     #human_model = ['00094_00.jpg', '00135_00.jpg', '00260_00.jpg', '00484_00.jpg', '00494_00.jpg', '00684_00.jpg', '00814_00.jpg', '01985_00.jpg']
-    full_length = os.listdir('Length/full')
-    half_length = os.listdir('Length/half')
-    middle_length = os.listdir('Length/middle')
-    sleeveless_length = os.listdir('Length/sleveless')
+    full_length = ['02017_00.jpg', '00858_00.jpg', '02299_00.jpg', '08232_00.jpg',
+       '06919_00.jpg', '02152_00.jpg', '02404_00.jpg', '03033_00.jpg',
+       '01410_00.jpg', '01609_00.jpg', '00889_00.jpg', '11841_00.jpg',
+       '12460_00.jpg', '00821_00.jpg', '04392_00.jpg', '01641_00.jpg',
+       '01008_00.jpg', '02870_00.jpg', '02666_00.jpg', '01796_00.jpg',
+       '11659_00.jpg', '00460_00.jpg', '09685_00.jpg', '00112_00.jpg',
+       '08278_00.jpg', '03615_00.jpg', '07212_00.jpg', '00740_00.jpg',
+       '11078_00.jpg', '01963_00.jpg', '11626_00.jpg', '00782_00.jpg',
+       '02424_00.jpg', '07706_00.jpg', '00084_00.jpg', '08199_00.jpg']
+    half_length = ['01630_00.jpg', '09199_00.jpg', '00286_00.jpg', '00891_00.jpg',
+       '00345_00.jpg', '04313_00.jpg', '13331_00.jpg', '08186_00.jpg',
+       '11401_00.jpg', '08322_00.jpg', '08376_00.jpg', '01713_00.jpg',
+       '10294_00.jpg', '05898_00.jpg', '08183_00.jpg', '00190_00.jpg',
+       '00055_00.jpg', '02887_00.jpg', '10709_00.jpg', '12345_00.jpg',
+       '06161_00.jpg', '04130_00.jpg', '01051_00.jpg', '11528_00.jpg',
+       '02759_00.jpg', '01944_00.jpg', '09541_00.jpg', '01229_00.jpg',
+       '00852_00.jpg', '00579_00.jpg', '12030_00.jpg', '05235_00.jpg',
+       '01449_00.jpg', '08538_00.jpg', '07036_00.jpg', '01198_00.jpg',
+       '13770_00.jpg', '13642_00.jpg', '06360_00.jpg', '10687_00.jpg',
+       '00499_00.jpg', '02244_00.jpg', '10680_00.jpg', '00440_00.jpg',
+       '11707_00.jpg', '11836_00.jpg', '01565_00.jpg', '02457_00.jpg',
+       '09867_00.jpg', '09097_00.jpg', '12534_00.jpg', '07703_00.jpg',
+       '02941_00.jpg', '02180_00.jpg', '01000_00.jpg', '01463_00.jpg',
+       '02534_00.jpg', '10448_00.jpg', '03250_00.jpg', '02765_00.jpg',
+       '05588_00.jpg', '01382_00.jpg', '04818_00.jpg', '08429_00.jpg',
+       '00121_00.jpg', '11330_00.jpg', '00802_00.jpg', '01035_00.jpg',
+       '02530_00.jpg', '04743_00.jpg']
+    middle_length = ['08673_00.jpg', '01320_00.jpg', '08989_00.jpg', '06647_00.jpg',
+       '08981_00.jpg', '03884_00.jpg', '10706_00.jpg', '12451_00.jpg',
+       '01470_00.jpg', '11028_00.jpg', '10090_00.jpg', '00592_00.jpg',
+       '05400_00.jpg', '02824_00.jpg', '00865_00.jpg', '04041_00.jpg']
+    sleeveless_length = ['02270_00.jpg', '06241_00.jpg', '03052_00.jpg', '02039_00.jpg',
+       '08321_00.jpg', '03061_00.jpg', '02007_00.jpg', '09026_00.jpg',
+       '04240_00.jpg', '10324_00.jpg', '10549_00.jpg', '04661_00.jpg',
+       '02768_00.jpg', '06173_00.jpg', '10931_00.jpg', '00986_00.jpg',
+       '09069_00.jpg', '02184_00.jpg', '12807_00.jpg', '03922_00.jpg',
+       '04700_00.jpg', '08481_00.jpg', '03374_00.jpg', '10343_00.jpg',
+       '02364_00.jpg']
 
-    human_model = []
+#    human_model = []
 
     if category == 'full':
         human_model = full_length
@@ -169,9 +203,10 @@ def upload_image():
     predict('image.jpg', category)
 
     #need best output value of img
-    img_dict = image_quality()
+#    img_dict = image_quality()
 
-    img = list(img_dict.values())[0]
+#    img = list(img_dict.values())[0]
+    img = '00055_00_image.png'
     file_path = 'output/test/test/unpaired/generator/output/' + img
     encoded_img = get_response_image(file_path)
 
