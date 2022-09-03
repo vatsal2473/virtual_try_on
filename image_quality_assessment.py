@@ -16,11 +16,6 @@ def MSE(img1, img2):
   return err
 
 def image_quality():
-<<<<<<< HEAD
-    warped_clothmask = os.listdir('output/test/test/unpaired/generator/warped_clothmask')
-    output = os.listdir('output/test/test/unpaired/generator/output')
-    print(len(warped_clothmask))
-=======
     for i in os.listdir('output/test/test/unpaired/generator/warped_clothmask/'):
         im = cv2.imread('output/test/test/unpaired/generator/warped_clothmask/'+i)
         im = cv2.resize(im,(270, 360))
@@ -44,7 +39,6 @@ def image_quality():
 
     warped_clothmask = os.listdir('output/test/test/unpaired/generator/warped_clothmask_resized')
     output = os.listdir('output/test/test/unpaired/generator/output_resized')
->>>>>>> 2095f1c00d41f758023779ad3be404561c75bc54
     for k in range(len(warped_clothmask)):
         img1 = Image.open('output/test/test/unpaired/generator/warped_clothmask_resized/' + warped_clothmask[k])
         img2 = Image.open('output/test/test/unpaired/generator/output_resized/' + output[k])
@@ -92,8 +86,4 @@ def image_quality():
 
     return sorted_err
 
-
-
-
 #image_quality()
-
