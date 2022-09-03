@@ -20,13 +20,13 @@ def image_quality():
         im = cv2.imread('output/test/test/unpaired/generator/warped_clothmask/'+i)
         im = cv2.resize(im,(270, 360))
         cv2.imwrite('output/test/test/unpaired/generator/warped_clothmask_resized/'+i.split('.')[0]+'.png',im)
-'''
+    '''
     # sharpen image
     for i in os.listdir('output/test/test/unpaired/generator/output/'):
         with WandImage(filename="output/test/test/unpaired/generator/output/"+i) as img:
             img.sharpen(8,4)
             img.save(filename="output/test/test/unpaired/generator/output_sharpened/"+i)
-'''
+    '''
 
     for i in os.listdir('output/test/test/unpaired/generator/output/'):
         im = cv2.imread('output/test/test/unpaired/generator/output/'+i)
@@ -67,24 +67,24 @@ def image_quality():
         img1 = cv2.imread("output/test/test/unpaired/generator/cloth_segment_resized/" + names[i])
         img2 = cv2.imread("output/test/test/unpaired/generator/model_cloth_segment_resized/" + names[i])
         err[MSE(img1, img2)] = names[i]
-'''
+    '''
     blur = {}
     for i in range(len(os.listdir('output/test/test/unpaired/generator/model_cloth_segment_resized'))):
         img = cv2.imread("output/test/test/unpaired/generator/model_cloth_segment_resized/" + names[i])
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         value = cv2.Laplacian(gray, cv2.CV_64F).var()
         blur[value] = names[i]
-'''
+    '''
     sorted_err = {}
     for i in sorted(err):
         sorted_err[i] = err[i]
     print(sorted_err)
-'''
+    '''
     sorted_blur = {}
     for i in sorted(blur):
         sorted_blur[i] = blur[i]
     print(sorted_blur)
-'''
+    '''
     return sorted_err
 
 #image_quality()
