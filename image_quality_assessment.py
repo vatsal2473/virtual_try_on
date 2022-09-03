@@ -86,8 +86,4 @@ def image_quality():
 
     return sorted_err
 
-
-
-
 #image_quality()
-
