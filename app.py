@@ -60,7 +60,7 @@ def predict(filename, category):
         human_model = sleeveless_length
 
 
-    '''
+    
     print(human_model)
     print(filename)
     infer.main()
@@ -80,11 +80,11 @@ def predict(filename, category):
                     img.putpixel((i, j), (255, 255, 255))
         img = img.convert('L')
         img.save(image_save_path)  	
-    '''
+    
 
     clean_my_data()
 
-    '''
+    
     src = 'static/uploads/' + filename
     dst = 'models/hrviton/my_data/test/cloth/' + filename
     shutil.copyfile(src, dst)
@@ -93,7 +93,7 @@ def predict(filename, category):
     dst = 'models/hrviton/my_data/test/cloth-mask/' + filename
     shutil.copyfile(src, dst)
 
-    '''
+    
 
     for i in range(len(human_model)):
         src = 'models/hrviton/data/zalando-hd-resized/test/image/' + human_model[i]
@@ -126,7 +126,7 @@ def predict(filename, category):
             f.write(human_model[i]+" "+filename)
             f.write("\n")
 
-    #test_generator.main()
+    test_generator.main()
 
 
 def get_response_image(image_path):
@@ -201,4 +201,4 @@ def upload_image():
 
  
 if __name__ == "__main__":
-    app.run(host='127.0.0.1', port=8080)
+    app.run()
