@@ -203,10 +203,12 @@ def upload_image():
     predict('image.jpg', category)
 
     #need best output value of img
-#    img_dict = image_quality()
+    print("done1")
+    img_dict = image_quality()
+    print("done2")
 
-#    img = list(img_dict.values())[0]
-    img = '00055_00_image.png'
+    img = list(img_dict.values())[0]
+#    img = '00055_00_image.png'
     file_path = 'output/test/test/unpaired/generator/output/' + img
     encoded_img = get_response_image(file_path)
 
