@@ -4,3 +4,7 @@ models/hrviton/checkpoints/*
 models/clothsegment/trained_checkpoint/*
 models/hrviton/my_data/*
 models/deep-image-prior
+good outputs
+good outputs.zip
+generator
+__pycache__

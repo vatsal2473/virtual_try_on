@@ -1,7 +1,7 @@
 from fileinput import filename
 from time import time
 from tkinter import W
-from PIL import Image
+from PIL import Image, ImageEnhance
 from numpy import asarray
 import os
 import cv2
@@ -87,4 +87,17 @@ def image_quality():
     '''
     return sorted_err
 
+
+def image_enchancer():
+    names = os.listdir('output/test/test/unpaired/generator/output')
+    for i in range(len(names)):
+        img_path = 'output/test/test/unpaired/generator/output/'+names[i]
+        image = Image.open(img_path)
+        curr_bri = ImageEnhance.Brightness(image)
+        new_bri = 1.2
+        img_brightened = curr_bri.enhance(new_bri)
+        save_path = 'output/test/test/unpaired/generator/enhance_output/' + names[i]
+        img_brightened.save(save_path)
+
 #image_quality()
+#image_enchancer()

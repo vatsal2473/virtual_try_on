@@ -17,7 +17,7 @@ import cv2
 import json
 from json import JSONEncoder
 import numpy
-from image_quality_assessment import image_quality
+from image_quality_assessment import image_enchancer, image_quality
 from clean_directories import clean_my_data, clean_static, clean_output
 
 
@@ -205,11 +205,13 @@ def upload_image():
     #need best output value of img
     print("done1")
     img_dict = image_quality()
+    image_enchancer()
     print("done2")
 
     img = list(img_dict.values())[0]
 #    img = '00055_00_image.png'
-    file_path = 'output/test/test/unpaired/generator/output/' + img
+    file_path = 'output/test/test/unpaired/generator/enhance_output/' + img
+
     encoded_img = get_response_image(file_path)
 
     response = jsonify({'output': encoded_img})
